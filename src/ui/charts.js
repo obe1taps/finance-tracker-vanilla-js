@@ -132,6 +132,42 @@ function cssVar(name, fallback) {
   return v && v.trim() ? v.trim() : fallback;
 }
 
+function setFont(ctx, px) {
+  ctx.font = `${px}px system-ui, -apple-system, Segoe UI, Roboto, Arial`;
+}
+
+function formatMoneyCompact(value, currency = "RUB") {
+  const num = Number(value) || 0;
+
+  const locale =
+    currency === "USD" ? "en-US" :
+    "ru-RU";
+
+  // compact-notation: 96,8 тыс., 1,2 млн и т.п.
+  try {
+    return new Intl.NumberFormat(locale, {
+      style: "currency",
+      currency,
+      notation: "compact",
+      compactDisplay: "short",
+      maximumFractionDigits: 1,
+    }).format(num);
+  } catch {
+    // fallback — если вдруг браузер древний
+    return String(num);
+  }
+}
+
+function fitText(ctx, text, maxWidth, { start = 14, min = 10 } = {}) {
+  let size = start;
+  while (size >= min) {
+    setFont(ctx, size);
+    if (ctx.measureText(text).width <= maxWidth) return { text, size };
+    size -= 1;
+  }
+  return null;
+}
+
 function drawDonut(
   canvas,
   items,
@@ -246,22 +282,42 @@ function drawDonut(
   ctx.globalCompositeOperation = "source-over";
 
   // center text
-  ctx.fillStyle = cssVar("--chart-center", "rgba(226, 232, 240, 0.92)");
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
+  // center text (adaptive)
+ctx.fillStyle = cssVar("--chart-center", "rgba(226, 232, 240, 0.92)");
+ctx.textAlign = "center";
+ctx.textBaseline = "middle";
 
-  ctx.font = "12px system-ui, -apple-system, Segoe UI, Roboto, Arial";
-  ctx.fillText(title, cx, cy - 10);
+const maxTextWidth = Math.max(40, Math.floor(rInner * 1.65));
 
-  const label =
-    typeof formatMoney === "function"
-      ? formatMoney(total, currency)
-      : `${Math.round(total)} ₽`;
+setFont(ctx, 12);
+ctx.fillText(title, cx, cy - 12);
 
-  ctx.font = "14px system-ui, -apple-system, Segoe UI, Roboto, Arial";
-  ctx.fillText(label, cx, cy + 12);
+let label =
+  typeof formatMoney === "function"
+    ? formatMoney(total, currency)
+    : `${Math.round(total)}`;
 
-  ctx.textAlign = "start";
+let fitted = fitText(ctx, label, maxTextWidth, { start: 14, min: 10 });
+
+if (!fitted) {
+  label = formatMoneyCompact(total, currency);
+  fitted = fitText(ctx, label, maxTextWidth, { start: 13, min: 10 });
+}
+
+if (!fitted) {
+  setFont(ctx, 10);
+  const ell = "…";
+  let t = label;
+  while (t.length > 0 && ctx.measureText(t + ell).width > maxTextWidth) {
+    t = t.slice(0, -1);
+  }
+  fitted = { text: t + ell, size: 10 };
+}
+
+setFont(ctx, fitted.size);
+ctx.fillText(fitted.text, cx, cy + 12);
+
+ctx.textAlign = "start";
 
   DONUT_STATE.set(canvas, {
     title,
