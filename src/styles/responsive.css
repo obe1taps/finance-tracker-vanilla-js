@@ -1,0 +1,117 @@
+@media (max-width: 720px) {
+  .cards {
+    grid-template-columns: 1fr;
+  }
+
+  .form {
+    grid-template-columns: 1fr;
+  }
+
+  .filters {
+    grid-template-columns: 1fr;
+  }
+
+  .filters__footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .stats {
+    grid-template-columns: 1fr;
+  }
+
+  .stats__block canvas {
+    height: 160px;
+  }
+
+  .pager {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  #loadMoreBtn {
+    width: 100%;
+  }
+
+  .toasts {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+  }
+
+  .toast {
+    max-width: none;
+    width: 100%;
+  }
+
+  .listHeader {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--gap-10);
+  }
+
+  .listHeader__actions {
+    flex-wrap: wrap;
+    gap: var(--gap-8);
+  }
+
+  .listHeader__actions .btn {
+    flex: 1 1 140px;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .modal__content {
+    margin: 6vh 12px;
+    max-width: none;
+  }
+
+  .header__row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--gap-14);
+  }
+
+  .header__right {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: end;
+    gap: var(--gap-10);
+  }
+
+  .iconBtn {
+    width: 100%;
+    justify-self: end;
+  }
+
+  /* Transactions: 2-line layout (под твою разметку списка) */
+  .item {
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "badge amount"
+      "info  remove";
+    gap: var(--gap-6) var(--gap-10);
+    padding: 12px 10px;
+  }
+
+  .item > div:nth-child(2) {
+    grid-area: info;
+    min-width: 0;
+  }
+
+  .badge {
+    grid-area: badge;
+    font-size: 11px;
+  }
+
+  .amount {
+    grid-area: amount;
+    text-align: right;
+    font-size: 15px;
+  }
+
+  .remove {
+    grid-area: remove;
+    justify-self: end;
+  }
+}

@@ -1,0 +1,68 @@
+input,
+select {
+  width: 100%;
+  padding: 12px;
+  border-radius: var(--r-sm);
+  border: var(--b-1) solid var(--border-2);
+  background: var(--field-bg);
+  color: var(--fg);
+  outline: none;
+}
+
+input:focus,
+select:focus {
+  border-color: var(--accent);
+}
+
+.btn {
+  padding: 10px 12px;
+  border-radius: var(--r-sm);
+  border: var(--b-1) solid var(--border-3);
+  background: var(--btn-bg);
+  color: var(--fg);
+  cursor: pointer;
+}
+.btn:hover {
+  filter: brightness(1.05);
+}
+
+.btn--ghost {
+  background: var(--btn-bg-ghost);
+}
+
+.btn--danger {
+  background: var(--btn-danger-bg);
+  border-color: var(--btn-danger-border);
+}
+
+.iconBtn {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--r-md);
+  border: var(--b-1) solid var(--border-3);
+  background: var(--surface);
+  color: var(--fg);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  font-size: 18px;
+  line-height: 1;
+}
+.iconBtn:hover {
+  filter: brightness(1.05);
+}
+
+.selectField {
+  display: grid;
+  gap: var(--gap-6);
+  min-width: 180px;
+}
+
+.selectField__label {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+#filtersToggleBtn {
+  white-space: nowrap;
+}

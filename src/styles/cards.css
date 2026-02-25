@@ -1,0 +1,33 @@
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--gap-12);
+  margin: 16px 0;
+}
+
+.card {
+  background: var(--surface);
+  border: var(--b-1) solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 14px;
+}
+
+.card__title {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.card__value {
+  font-size: 22px;
+  margin-top: 8px;
+  font-weight: 700;
+}
+
+.panel {
+  background: var(--surface);
+  border: var(--b-1) solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 14px;
+  margin: 12px 0;
+  min-width: 0;
+}

@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Трекер личных финансов</title>
+  </head>
+  <body>
+    <header class="container header">
+      <div class="header__row">
+        <div class="header__left">
+          <h1>Трекер личных финансов</h1>
+          <p class="muted">Доходы, расходы и баланс — всё в одном месте.</p>
+        </div>
+        <div class="header__right">
+          <label class="selectField">
+            <select id="currencySelect">
+              <option value="RUB">RUB ₽</option>
+              <option value="USD">USD $</option>
+              <option value="BYN">BYN Br</option>
+            </select>
+          </label>
+          <button
+            id="themeToggleBtn"
+            class="iconBtn"
+            type="button"
+            aria-label="Переключить тему"
+          >
+            🌙
+          </button>
+        </div>
+      </div>
+    </header>
+    <main class="container">
+      <section class="cards">
+        <div class="card">
+          <div class="card__title">Доходы</div>
+          <div id="incomeTotal" class="card__value">0 ₽</div>
+        </div>
+        <div class="card">
+          <div class="card__title">Расходы</div>
+          <div id="expenseTotal" class="card__value">0 ₽</div>
+        </div>
+        <div class="card">
+          <div class="card__title">Баланс</div>
+          <div id="balanceTotal" class="card__value">0 ₽</div>
+        </div>
+      </section>
+      <section class="panel">
+        <div class="listHeader">
+          <h2>Операции</h2>
+          <div class="listHeader__actions">
+            <button id="openCreateBtn" class="btn" type="button">
+              Добавить операцию
+            </button>
+            <button
+              id="filtersToggleBtn"
+              class="btn btn--ghost"
+              type="button"
+              aria-expanded="false"
+              aria-controls="filtersCollapse"
+            >
+              Фильтры
+            </button>
+            <button id="exportCsvBtn" class="btn btn--ghost" type="button">
+              Экспорт CSV
+            </button>
+            <button id="clearAllBtn" class="btn btn--danger" type="button">
+              Очистить всё
+            </button>
+          </div>
+        </div>
+        <div id="filtersCollapse" class="filtersCollapse" hidden>
+          <div class="filters">
+            <label class="field">
+              <span class="field__label">Тип</span>
+              <select id="filterType">
+                <option value="all" selected>Все</option>
+                <option value="income">Доходы</option>
+                <option value="expense">Расходы</option>
+              </select>
+            </label>
+            <label class="field">
+              <span class="field__label">Категория</span>
+              <select id="filterCategory">
+                <option value="all" selected>Все категории</option>
+                <!-- Расходы -->
+                <option data-type="expense" value="Еда">Еда</option>
+                <option data-type="expense" value="Транспорт">Транспорт</option>
+                <option data-type="expense" value="Жильё">Жильё</option>
+                <option data-type="expense" value="Развлечения">
+                  Развлечения
+                </option>
+                <option data-type="expense" value="Здоровье">Здоровье</option>
+                <option data-type="expense" value="Покупки">Покупки</option>
+                <option data-type="expense" value="Прочее">Прочее</option>
+                <!-- Доходы -->
+                <option data-type="income" value="Зарплата">Зарплата</option>
+                <option data-type="income" value="Подработка">
+                  Подработка
+                </option>
+                <option data-type="income" value="Подарок">Подарок</option>
+                <option data-type="income" value="Возврат">Возврат</option>
+                <option data-type="income" value="Другое">Другое</option>
+              </select>
+            </label>
+            <label class="field">
+              <span class="field__label">Сортировка</span>
+              <select id="sortOrder">
+                <option value="desc" selected>Сначала новые</option>
+                <option value="asc">Сначала старые</option>
+              </select>
+            </label>
+            <label class="field">
+              <span class="field__label">Период</span>
+              <select id="filterPeriod">
+                <option value="all" selected>За всё время</option>
+                <option value="7d">Последние 7 дней</option>
+                <option value="30d">Последние 30 дней</option>
+                <option value="month">Этот месяц</option>
+                <option value="year">Этот год</option>
+                <option value="custom">Выбрать…</option>
+              </select>
+            </label>
+            <label class="field">
+              <span class="field__label">С</span>
+              <input id="filterFrom" type="date" disabled />
+            </label>
+            <label class="field">
+              <span class="field__label">По</span>
+              <input id="filterTo" type="date" disabled />
+            </label>
+            <label class="field field--full">
+              <span class="field__label">Поиск по комментарию</span>
+              <input
+                id="filterQuery"
+                type="text"
+                placeholder="Например: магазин, кофе, такси..."
+              />
+            </label>
+            <div class="actions filters__footer">
+              <span class="filters__hint">
+                Нажмите на строку, чтобы изменить операцию
+              </span>
+              <button id="resetFiltersBtn" class="btn btn--ghost" type="button">
+                Сбросить фильтры
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="stats">
+          <div class="stats__block">
+            <div class="stats__title">Расходы по категориям</div>
+            <canvas id="chartExpense"></canvas>
+            <ul id="statsExpense" class="stats__list"></ul>
+            <p id="statsExpenseEmpty" class="muted">Пока нет расходов</p>
+          </div>
+          <div class="stats__block">
+            <div class="stats__title">Доходы по категориям</div>
+            <canvas id="chartIncome"></canvas>
+            <ul id="statsIncome" class="stats__list"></ul>
+            <p id="statsIncomeEmpty" class="muted">Пока нет доходов</p>
+          </div>
+        </div>
+        <h2>Список операций</h2>
+        <ul id="transactionsList" class="list"></ul>
+        <div id="listPager" class="pager">
+          <div id="pagerInfo" class="muted"></div>
+          <button id="loadMoreBtn" class="btn btn--ghost" type="button">
+            Показать ещё
+          </button>
+        </div>
+        <p id="emptyState" class="muted">Операций пока нет. Добавь первую 👇</p>
+      </section>
+    </main>
+    <footer class="footer muted">
+      <div class="container">
+        <small
+          >v0.2 • Чистый JavaScript • Данные хранятся в браузере
+          (localStorage)</small
+        >
+      </div>
+    </footer>
+    <!-- Модалка -->
+    <div id="txModal" class="modal" aria-hidden="true">
+      <div class="modal__backdrop" data-close="true"></div>
+      <div
+        class="modal__content"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modalTitle"
+      >
+        <div class="modal__header">
+          <h2 id="modalTitle">Новая операция</h2>
+          <button
+            id="closeModalBtn"
+            class="modal__close"
+            type="button"
+            aria-label="Закрыть"
+          >
+            ×
+          </button>
+        </div>
+        <form id="transactionForm" class="form">
+          <label class="field">
+            <span class="field__label">Тип</span>
+            <select name="type" required>
+              <option value="expense" selected>Расход</option>
+              <option value="income">Доход</option>
+            </select>
+          </label>
+          <label class="field">
+            <span class="field__label">Сумма</span>
+            <input
+              name="amount"
+              type="text"
+              inputmode="decimal"
+              placeholder="Например: 1200"
+              autocomplete="off"
+              required
+            />
+          </label>
+          <label class="field">
+            <span class="field__label">Категория</span>
+            <select name="category" required>
+              <!-- Расходы -->
+              <option data-type="expense" value="Еда">Еда</option>
+              <option data-type="expense" value="Транспорт">Транспорт</option>
+              <option data-type="expense" value="Жильё">Жильё</option>
+              <option data-type="expense" value="Развлечения">
+                Развлечения
+              </option>
+              <option data-type="expense" value="Здоровье">Здоровье</option>
+              <option data-type="expense" value="Покупки">Покупки</option>
+              <option data-type="expense" value="Прочее">Прочее</option>
+              <!-- Доходы -->
+              <option data-type="income" value="Зарплата">Зарплата</option>
+              <option data-type="income" value="Подработка">Подработка</option>
+              <option data-type="income" value="Подарок">Подарок</option>
+              <option data-type="income" value="Возврат">Возврат</option>
+              <option data-type="income" value="Другое">Другое</option>
+            </select>
+          </label>
+          <label class="field">
+            <span class="field__label">Дата</span>
+            <input name="date" type="date" required />
+          </label>
+          <label class="field field--full">
+            <span class="field__label">Комментарий</span>
+            <input
+              name="note"
+              type="text"
+              placeholder="Например: продукты в магазине"
+              maxlength="60"
+            />
+          </label>
+          <div class="actions">
+            <button id="submitBtn" class="btn" type="submit">Добавить</button>
+            <button id="cancelEditBtn" class="btn btn--ghost" type="button">
+              Закрыть
+            </button>
+          </div>
+          <p id="formError" class="error" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+    <div
+      id="toasts"
+      class="toasts"
+      aria-live="polite"
+      aria-relevant="additions"
+    ></div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

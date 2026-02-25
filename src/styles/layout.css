@@ -1,0 +1,41 @@
+.container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  min-width: 0;
+}
+
+main {
+  padding-bottom: 20px;
+}
+
+.header {
+  padding-top: 24px;
+}
+
+.footer {
+  margin-top: auto;
+  padding: 10px 0 18px;
+  text-align: center;
+  opacity: 0.75;
+  transition: opacity var(--t-fast);
+}
+.footer:hover {
+  opacity: 1;
+}
+
+.header__row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--gap-12);
+}
+
+.header__left {
+  min-width: 0;
+}
+
+.header__right {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--gap-12);
+}

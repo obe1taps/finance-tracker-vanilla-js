@@ -1,0 +1,117 @@
+.toasts {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-10);
+  z-index: 1100;
+}
+
+.toast {
+  position: relative;
+  overflow: hidden;
+  min-width: 260px;
+  max-width: 360px;
+  padding: 12px 14px;
+  border-radius: var(--r-md);
+  border: var(--b-1) solid var(--border-3);
+  background: var(--surface-glass);
+  backdrop-filter: blur(6px);
+  color: var(--fg);
+  box-shadow: var(--shadow-1);
+  display: flex;
+  align-items: center;
+  gap: var(--gap-12);
+  opacity: 0;
+  transform: translateY(10px) scale(0.98);
+  transition: opacity var(--t-toast), transform var(--t-toast);
+}
+
+.toast.is-show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.toast__progress {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 100%;
+  background: currentColor;
+  opacity: 0.55;
+  transform-origin: left;
+  transform: scaleX(1);
+}
+
+.toast__progress.is-anim {
+  transition: transform linear;
+  transform: scaleX(0);
+}
+
+.toast__icon {
+  flex: 0 0 auto;
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  border: var(--b-1) solid var(--border-3);
+  background: var(--surface-2);
+  line-height: 1;
+}
+
+.toast__icon svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+
+.toast__title {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+}
+
+.toast__text {
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.25;
+}
+
+.toast__actions {
+  margin-left: auto;
+  display: flex;
+  gap: var(--gap-8);
+  align-items: center;
+}
+
+.toast__btn {
+  border: var(--b-1) solid var(--border-3);
+  background: var(--surface-2);
+  color: var(--fg);
+  padding: 6px 10px;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  font-size: 12px;
+}
+.toast__btn:hover {
+  filter: brightness(1.05);
+}
+
+.toast--success {
+  color: var(--income);
+  border-color: color-mix(in srgb, var(--income) 35%, var(--border-3));
+}
+.toast--danger {
+  color: var(--expense);
+  border-color: color-mix(in srgb, var(--expense) 35%, var(--border-3));
+}
+.toast--info {
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--border-3));
+}
