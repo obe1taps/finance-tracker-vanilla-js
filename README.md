@@ -18,15 +18,15 @@
 
 ✅ Валюта: RUB / USD / BYN
 
-✅ Тема: light / dark / auto (с сохранением выбора)
+✅ Тема: light / dark / auto
 
 ✅ Donut-графики по категориям + tooltip
 
-✅ Экспорт списка в CSV (совместимо с Excel, разделитель ;, BOM UTF-8)
+✅ Экспорт списка в CSV
 
 ✅ Пагинация “Load more”
 
-✅ UI-компоненты: модалка, тосты, адаптивная верстка
+✅ Модалка, тосты, адаптив
 
 🛠 Tech Stack
 
@@ -34,18 +34,19 @@ Vanilla JavaScript (ES Modules)
 
 Vite
 
-HTML / CSS (разделение по файлам + CSS Layers)
+HTML / CSS (разделено по файлам + CSS Layers)
 
-Canvas (графики без внешних библиотек)
+Canvas API (без внешних библиотек)
 
 ⚙️ Getting Started
 1. Install
 npm install
-2. Run (dev)
+2. Run (development)
 npm run dev
 
-Открой адрес из терминала (обычно http://localhost:5173).
+Открой в браузере:
 
+http://localhost:5173
 3. Build
 npm run build
 4. Preview production build
@@ -53,51 +54,51 @@ npm run preview
 📁 Project Structure
 src/
   app/
-    app.js              # сборка логики приложения
-    dom.js              # DOM refs
-    bindEvents.js       # централизованная привязка событий
+    app.js
+    dom.js
+    bindEvents.js
 
   controllers/
-    formController.js   # чтение и валидация формы
-    listController.js   # обработка кликов (edit/remove)
+    formController.js
+    listController.js
 
   core/
-    state.js            # состояние приложения
-    actions.js          # add/update/delete/undo/persist
+    state.js
+    actions.js
 
   domain/
-    filters.js          # фильтрация (pure functions)
-    export.js           # CSV export
-    selectors.js        # totals / category totals / top+other
+    filters.js
+    export.js
+    selectors.js
 
   ui/
-    ui.js               # рендер списка, итогов, статистики
-    charts.js           # donut chart + hit test
-    donutTooltip.js     # tooltip для графика
-    modal.js            # модалка + восстановление фокуса
-    toast.js            # система уведомлений
-    theme.js            # логика темы
-    filtersAccordion.js # accordion для фильтров
-    filtersUi.js        # синхронизация UI фильтров
-    categoryOptions.js  # категории по типу операции
+    ui.js
+    charts.js
+    donutTooltip.js
+    modal.js
+    toast.js
+    theme.js
+    filtersAccordion.js
+    filtersUi.js
+    categoryOptions.js
 
   utils/
-    storage.js          # localStorage helpers
-    utils.js            # format / escape helpers
+    storage.js
+    utils.js
 
   styles/
     index.css
     tokens.css
     base.css
     layout.css
-    components...
-♿ UX / Accessibility Notes
+    components/
+♿ UX / Accessibility
 
 Escape закрывает модалку и фильтры
 
 Фокус восстанавливается при закрытии модального окна
 
-Toast поддерживает action-кнопку “Отменить”
+Toast поддерживает кнопку действия “Отменить”
 
 📦 Data Format
 {
@@ -109,7 +110,7 @@ Toast поддерживает action-кнопку “Отменить”
   note: string
 }
 
-Данные сохраняются в localStorage (версионированный ключ для возможных миграций).
+Данные сохраняются в localStorage.
 
 📄 License
 
