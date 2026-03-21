@@ -40,6 +40,7 @@ import { renderCategoryCharts } from "../ui/charts.js";
 import { attachDonutTooltip } from "../ui/donutTooltip.js";
 import { initFiltersAccordion } from "../ui/filtersAccordion.js";
 import { bindEvents } from "./bindEvents.js";
+import { createAppHandlers } from "./createAppHandlers.js";
 
 // DOM refs
 const form = dom.form;
@@ -85,7 +86,6 @@ function closeModalAndReset() {
     onClose: () => {
       showError("");
       stopEdit();
-      rerender();
     },
   });
 }
@@ -219,17 +219,17 @@ if (nextCat) state.filters.category = nextCat;
 syncPeriodUI(dom, state.filters);
 rerender();
 
-bindEvents({
+const handlers = createAppHandlers({
   dom,
   state,
   form,
   modal,
+
   showToast,
   rerender,
   resetPagingAndRender,
   closeModalAndReset,
 
-  // actions
   addTransaction,
   updateTransaction,
   deleteTransactionWithUndo,
@@ -237,39 +237,36 @@ bindEvents({
   clearAllWithUndo,
   undoClearAll,
 
-  // controllers
   readForm,
   validateForm,
   resetFormToDefault,
   handleListClick,
 
-  // app helpers
   formatMoney,
   todayISO,
 
-  // filters ui
   syncPeriodUI,
   applyFiltersToDom,
   syncFilterCategoryOptions,
   resetFiltersFn: resetFilters,
 
-  // category options
   syncCategoryOptionsByType,
 
-  // edit flow
   startEdit,
   stopEdit,
 
-  // theme
   toggleTheme,
   saveThemeMode,
 
-  // currency
   saveCurrency,
 
-  // export
   exportTransactionsToCSV,
 
-  // accordion
   filtersAccordion,
+});
+
+const events = bindEvents({
+  dom,
+  form,
+  handlers,
 });
