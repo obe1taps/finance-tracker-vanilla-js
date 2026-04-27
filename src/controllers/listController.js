@@ -1,3 +1,5 @@
+import { TYPE_LABELS } from "../config/appConfig.js";
+
 export function handleListClick({
   e,
   state,
@@ -25,7 +27,9 @@ export function handleListClick({
 
     showToast({
       title: "Операция удалена",
-      text: `${res.tx.type === "income" ? "Доход" : "Расход"}: ${formatRub(res.tx.amount)} • ${res.tx.category}`,
+      text: `${TYPE_LABELS[res.tx.type] || res.tx.type}: ${formatRub(
+        res.tx.amount,
+      )} • ${res.tx.category}`,
       type: "danger",
       ms: res.ms,
       actionText: "Отменить",

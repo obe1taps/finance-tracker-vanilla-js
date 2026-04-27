@@ -33,17 +33,76 @@
     </header>
     <main class="container">
       <section class="cards">
-        <div class="card">
+        <div class="card card--income">
           <div class="card__title">Доходы</div>
           <div id="incomeTotal" class="card__value">0 ₽</div>
         </div>
-        <div class="card">
+        <div class="card card--expense">
           <div class="card__title">Расходы</div>
           <div id="expenseTotal" class="card__value">0 ₽</div>
         </div>
-        <div class="card">
+        <div class="card card--balance">
           <div class="card__title">Баланс</div>
           <div id="balanceTotal" class="card__value">0 ₽</div>
+        </div>
+      </section>
+      <section class="monthOverview" aria-label="Обзор месяца">
+        <div class="budgetPanel">
+          <div class="sectionHeading">
+            <div>
+              <p class="sectionKicker">Текущий месяц</p>
+              <h2>Бюджет и темп расходов</h2>
+            </div>
+            <label class="budgetInput">
+              <span class="field__label">Лимит расходов</span>
+              <input
+                id="monthlyBudgetInput"
+                type="text"
+                inputmode="decimal"
+                placeholder="Например: 40000"
+                autocomplete="off"
+              />
+            </label>
+          </div>
+          <div class="budgetNumbers">
+            <div>
+              <span class="budgetNumbers__label">Потрачено</span>
+              <strong id="monthlySpent">0 ₽</strong>
+            </div>
+            <div>
+              <span class="budgetNumbers__label">Остаток</span>
+              <strong id="budgetLeft">Укажите лимит</strong>
+            </div>
+          </div>
+          <div class="budgetMeter" aria-hidden="true">
+            <span id="budgetProgress"></span>
+          </div>
+          <p id="budgetStatus" class="budgetStatus">
+            Задайте бюджет, чтобы видеть остаток на месяц.
+          </p>
+        </div>
+        <div class="insightGrid">
+          <div class="insight">
+            <span class="insight__label">Доход за месяц</span>
+            <strong id="monthlyIncome">0 ₽</strong>
+          </div>
+          <div class="insight">
+            <span class="insight__label">Баланс месяца</span>
+            <strong id="monthlyBalance">0 ₽</strong>
+          </div>
+          <div class="insight">
+            <span class="insight__label">Средний расход в день</span>
+            <strong id="dailyAverage">0 ₽</strong>
+          </div>
+          <div class="insight">
+            <span class="insight__label">Операций</span>
+            <strong id="operationsCount">0</strong>
+          </div>
+          <div class="insight insight--wide">
+            <span class="insight__label">Крупная трата</span>
+            <strong id="largestExpense">Нет расходов</strong>
+            <small id="largestExpenseMeta">За текущий месяц</small>
+          </div>
         </div>
       </section>
       <section class="panel">
@@ -131,11 +190,11 @@
               <input id="filterTo" type="date" disabled />
             </label>
             <label class="field field--full">
-              <span class="field__label">Поиск по комментарию</span>
+              <span class="field__label">Поиск</span>
               <input
                 id="filterQuery"
                 type="text"
-                placeholder="Например: магазин, кофе, такси..."
+                placeholder="Комментарий, категория, дата или сумма..."
               />
             </label>
             <div class="actions filters__footer">
@@ -208,7 +267,7 @@
               <option value="income">Доход</option>
             </select>
           </label>
-          <label class="field">
+          <div class="field">
             <span class="field__label">Сумма</span>
             <input
               name="amount"
@@ -218,7 +277,13 @@
               autocomplete="off"
               required
             />
-          </label>
+          </div>
+          <div class="quickAmounts field--full" aria-label="Быстрые суммы">
+            <button type="button" data-quick-amount="500">500</button>
+            <button type="button" data-quick-amount="1000">1 000</button>
+            <button type="button" data-quick-amount="2500">2 500</button>
+            <button type="button" data-quick-amount="5000">5 000</button>
+          </div>
           <label class="field">
             <span class="field__label">Категория</span>
             <select name="category" required>

@@ -28,8 +28,8 @@ body.modal-open {
   margin: 10vh auto;
   background: var(--surface);
   border: var(--b-1) solid var(--border);
-  border-radius: var(--r-xl);
-  padding: 14px;
+  border-radius: 10px;
+  padding: 16px;
   box-shadow: var(--shadow-1);
   transform: translateY(8px) scale(0.98);
   transition: transform var(--t-mid);
@@ -50,7 +50,7 @@ body.modal-open {
 .modal__close {
   width: 36px;
   height: 36px;
-  border-radius: var(--r-sm);
+  border-radius: 8px;
   border: var(--b-1) solid var(--border-3);
   background: transparent;
   color: var(--fg);

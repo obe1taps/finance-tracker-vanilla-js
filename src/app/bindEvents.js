@@ -12,8 +12,10 @@ export function bindEvents({
   }
 
   on(dom?.currencySelectEl, "change", handlers?.onCurrencyChange);
+  on(dom?.monthlyBudgetInputEl, "input", handlers?.onMonthlyBudgetInput);
   on(dom?.themeToggleBtn, "click", handlers?.onThemeClick);
   on(form, "submit", handlers?.onSubmit);
+  on(form, "click", handlers?.onFormClick);
   on(form?.elements?.type, "change", handlers?.onFormTypeChange);
   on(dom?.listEl, "click", handlers?.onListClick);
   on(dom?.clearAllBtn, "click", handlers?.onClearAll);

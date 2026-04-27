@@ -1,4 +1,5 @@
 import { dom } from "./dom.js";
+import { DEFAULT_PAGING } from "../config/appConfig.js";
 import {
   readForm,
   validateForm,
@@ -23,8 +24,15 @@ import {
   saveThemeMode,
   loadFiltersOpen,
   saveFiltersOpen,
+  loadMonthlyBudget,
+  saveMonthlyBudget,
 } from "../utils/storage.js";
-import { formatMoney, todayISO, escapeHtml } from "../utils/utils.js";
+import {
+  formatMoney,
+  todayISO,
+  escapeHtml,
+  parseMoneyInput,
+} from "../utils/utils.js";
 import { applyFilters, resetFilters } from "../domain/filters.js";
 import { applyFiltersToDom, syncPeriodUI } from "../ui/filtersUi.js";
 import {
@@ -32,7 +40,12 @@ import {
   syncFilterCategoryOptions,
 } from "../ui/categoryOptions.js";
 import { exportTransactionsToCSV } from "../domain/export.js";
-import { renderList, renderTotals, renderStats } from "../ui/ui.js";
+import {
+  renderList,
+  renderTotals,
+  renderStats,
+  renderMonthOverview,
+} from "../ui/ui.js";
 import { createToast } from "../ui/toast.js";
 import { createModal } from "../ui/modal.js";
 import { applyTheme, toggleTheme, bindAutoThemeListener } from "../ui/theme.js";
@@ -52,7 +65,11 @@ const { showToast } = createToast({ toastsEl: dom.toastsEl, escapeHtml });
 // Init state
 state.transactions = loadTransactions();
 state.currency = loadCurrency();
+state.monthlyBudget = loadMonthlyBudget();
 if (dom.currencySelectEl) dom.currencySelectEl.value = state.currency;
+if (dom.monthlyBudgetInputEl && state.monthlyBudget > 0) {
+  dom.monthlyBudgetInputEl.value = String(state.monthlyBudget);
+}
 
 // Edit
 function startEdit(tx) {
@@ -142,6 +159,23 @@ function rerender() {
     state.currency,
   );
 
+  renderMonthOverview(
+    {
+      monthlySpentEl: dom.monthlySpentEl,
+      monthlyIncomeEl: dom.monthlyIncomeEl,
+      monthlyBalanceEl: dom.monthlyBalanceEl,
+      dailyAverageEl: dom.dailyAverageEl,
+      largestExpenseEl: dom.largestExpenseEl,
+      largestExpenseMetaEl: dom.largestExpenseMetaEl,
+      operationsCountEl: dom.operationsCountEl,
+      budgetLeftEl: dom.budgetLeftEl,
+      budgetProgressEl: dom.budgetProgressEl,
+      budgetStatusEl: dom.budgetStatusEl,
+    },
+    state.transactions,
+    { currency: state.currency, monthlyBudget: state.monthlyBudget },
+  );
+
   lastColorMaps =
     renderCategoryCharts(
       { chartExpense: dom.chartExpense, chartIncome: dom.chartIncome },
@@ -162,7 +196,7 @@ function rerender() {
   );
 }
 
-function resetPagingAndRender(limit = 10) {
+function resetPagingAndRender(limit = DEFAULT_PAGING.limit) {
   resetPaging(state, limit);
   rerender();
 }
@@ -259,6 +293,9 @@ const handlers = createAppHandlers({
   saveThemeMode,
 
   saveCurrency,
+
+  saveMonthlyBudget,
+  parseMoneyInput,
 
   exportTransactionsToCSV,
 

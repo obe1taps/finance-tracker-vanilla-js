@@ -28,21 +28,28 @@
   padding: 10px 12px;
   border-bottom: var(--b-1) solid var(--border);
   min-width: 0;
+  transition: background var(--t-fast), transform var(--t-fast);
+}
+
+.item:hover {
+  background: var(--surface-2);
 }
 
 .item--editing {
   outline: 2px solid var(--accent);
   background: rgba(59, 130, 246, 0.1);
-  border-radius: var(--r-md);
+  border-radius: 8px;
 }
 
 .badge {
   font-size: 12px;
   padding: 4px 8px;
   border: var(--b-1) solid var(--border-3);
-  border-radius: var(--r-pill);
+  border-radius: 8px;
   color: var(--fg);
   width: fit-content;
+  background: var(--surface-2);
+  font-weight: 650;
 }
 
 .amount {
@@ -58,7 +65,7 @@
 .remove {
   width: 40px;
   height: 40px;
-  border-radius: var(--r-sm);
+  border-radius: 8px;
   border: var(--b-1) solid var(--border-3);
   background: transparent;
   color: var(--fg);
@@ -66,6 +73,8 @@
 }
 .remove:hover {
   filter: brightness(1.05);
+  border-color: var(--expense);
+  color: var(--expense);
 }
 
 .pager {

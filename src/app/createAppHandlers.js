@@ -1,3 +1,9 @@
+import {
+  CURRENCIES,
+  DEFAULT_PAGING,
+  TRANSACTION_TYPES,
+} from "../config/appConfig.js";
+
 export function createAppHandlers({
   dom,
   state,
@@ -38,6 +44,8 @@ export function createAppHandlers({
   saveThemeMode,
 
   saveCurrency,
+  saveMonthlyBudget,
+  parseMoneyInput,
 
   exportTransactionsToCSV,
 
@@ -50,10 +58,24 @@ export function createAppHandlers({
   return {
     onCurrencyChange(e) {
       const next = e.target.value;
-      if (!["RUB", "USD", "BYN"].includes(next)) return;
+      if (!CURRENCIES.includes(next)) return;
 
       state.currency = next;
       if (typeof saveCurrency === "function") saveCurrency(next);
+      rerender();
+    },
+
+    onMonthlyBudgetInput(e) {
+      const raw = e.target.value;
+      const budget = typeof parseMoneyInput === "function"
+        ? parseMoneyInput(raw)
+        : Number(raw);
+
+      state.monthlyBudget = Number.isFinite(budget) && budget > 0 ? budget : 0;
+      if (typeof saveMonthlyBudget === "function") {
+        saveMonthlyBudget(state.monthlyBudget);
+      }
+
       rerender();
     },
 
@@ -99,6 +121,17 @@ export function createAppHandlers({
 
     onFormTypeChange(e) {
       syncCategoryOptionsByType(form, e.target.value);
+    },
+
+    onFormClick(e) {
+      const quickAmountBtn = e.target.closest("[data-quick-amount]");
+      if (!quickAmountBtn) return;
+
+      const value = quickAmountBtn.dataset.quickAmount;
+      if (!value) return;
+
+      form.elements.amount.value = value;
+      form.elements.amount.focus();
     },
 
     onListClick(e) {
@@ -223,8 +256,8 @@ export function createAppHandlers({
       dom.cancelEditBtn.textContent = "Закрыть";
 
       form.reset();
-      form.elements.type.value = "expense";
-      syncCategoryOptionsByType(form, "expense");
+      form.elements.type.value = TRANSACTION_TYPES.EXPENSE;
+      syncCategoryOptionsByType(form, TRANSACTION_TYPES.EXPENSE);
       form.elements.date.value = todayISO();
 
       modal.open();
@@ -268,7 +301,7 @@ export function createAppHandlers({
     },
 
     onLoadMore() {
-      const step = state.paging.step ?? 10;
+      const step = state.paging.step ?? DEFAULT_PAGING.step;
       state.paging.limit += step;
       rerender();
     },

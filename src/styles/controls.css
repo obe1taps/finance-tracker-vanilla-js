@@ -2,28 +2,37 @@ input,
 select {
   width: 100%;
   padding: 12px;
-  border-radius: var(--r-sm);
+  border-radius: 8px;
   border: var(--b-1) solid var(--border-2);
   background: var(--field-bg);
   color: var(--fg);
   outline: none;
+  transition: border-color var(--t-fast), box-shadow var(--t-fast), background var(--t-fast);
 }
 
 input:focus,
 select:focus {
   border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(98, 214, 168, 0.16);
 }
 
 .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   padding: 10px 12px;
-  border-radius: var(--r-sm);
+  border-radius: 8px;
   border: var(--b-1) solid var(--border-3);
   background: var(--btn-bg);
   color: var(--fg);
   cursor: pointer;
+  font-weight: 650;
+  transition: transform var(--t-fast), filter var(--t-fast), border-color var(--t-fast);
 }
 .btn:hover {
   filter: brightness(1.05);
+  transform: translateY(-1px);
 }
 
 .btn--ghost {
@@ -38,7 +47,7 @@ select:focus {
 .iconBtn {
   width: 44px;
   height: 44px;
-  border-radius: var(--r-md);
+  border-radius: 8px;
   border: var(--b-1) solid var(--border-3);
   background: var(--surface);
   color: var(--fg);
@@ -47,9 +56,11 @@ select:focus {
   place-items: center;
   font-size: 18px;
   line-height: 1;
+  transition: transform var(--t-fast), filter var(--t-fast), border-color var(--t-fast);
 }
 .iconBtn:hover {
   filter: brightness(1.05);
+  transform: translateY(-1px);
 }
 
 .selectField {
@@ -65,4 +76,28 @@ select:focus {
 
 #filtersToggleBtn {
   white-space: nowrap;
+}
+
+.quickAmounts {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--gap-6);
+}
+
+.quickAmounts button {
+  min-height: 34px;
+  border-radius: 8px;
+  border: var(--b-1) solid var(--border);
+  background: var(--surface-2);
+  color: var(--fg);
+  cursor: pointer;
+  font-weight: 650;
+  transition: background var(--t-fast), border-color var(--t-fast), transform var(--t-fast);
+}
+
+.quickAmounts button:hover {
+  background: var(--surface-3);
+  border-color: var(--accent);
+  transform: translateY(-1px);
 }

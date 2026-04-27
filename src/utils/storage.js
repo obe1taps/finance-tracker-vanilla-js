@@ -1,10 +1,12 @@
-export const STORAGE_KEY = "finance_tracker_transactions_v1";
+import {
+  CURRENCIES,
+  DEFAULT_CURRENCY,
+  STORAGE_KEYS,
+} from "../config/appConfig.js";
 
-const CURRENCY_KEY = "finance_tracker_currency"; // "RUB" | "USD" | "BYN"
-const THEME_KEY = "finance_tracker_theme"; // "light" | "dark" | "auto"
-const FILTERS_OPEN_KEY = "finance_filters_open_v1"; // "1" | "0"
+export const STORAGE_KEY = STORAGE_KEYS.transactions;
 
-// Transactions 
+// Transactions
 export function loadTransactions() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -25,23 +27,45 @@ export function saveTransactions(list) {
 // Currency
 export function loadCurrency() {
   try {
-    const v = localStorage.getItem(CURRENCY_KEY);
-    return v === "USD" || v === "BYN" || v === "RUB" ? v : "RUB";
+    const v = localStorage.getItem(STORAGE_KEYS.currency);
+    return CURRENCIES.includes(v) ? v : DEFAULT_CURRENCY;
   } catch {
-    return "RUB";
+    return DEFAULT_CURRENCY;
   }
 }
 
 export function saveCurrency(code) {
   try {
-    localStorage.setItem(CURRENCY_KEY, code);
+    localStorage.setItem(STORAGE_KEYS.currency, code);
+  } catch {}
+}
+
+// Monthly budget
+export function loadMonthlyBudget() {
+  try {
+    const value = Number(localStorage.getItem(STORAGE_KEYS.monthlyBudget));
+    return Number.isFinite(value) && value > 0 ? value : 0;
+  } catch {
+    return 0;
+  }
+}
+
+export function saveMonthlyBudget(value) {
+  try {
+    const next = Number(value);
+    if (!Number.isFinite(next) || next <= 0) {
+      localStorage.removeItem(STORAGE_KEYS.monthlyBudget);
+      return;
+    }
+
+    localStorage.setItem(STORAGE_KEYS.monthlyBudget, String(next));
   } catch {}
 }
 
 // Theme
 export function loadThemeMode() {
   try {
-    return localStorage.getItem(THEME_KEY) || "auto";
+    return localStorage.getItem(STORAGE_KEYS.theme) || "auto";
   } catch {
     return "auto";
   }
@@ -49,14 +73,14 @@ export function loadThemeMode() {
 
 export function saveThemeMode(mode) {
   try {
-    localStorage.setItem(THEME_KEY, mode);
+    localStorage.setItem(STORAGE_KEYS.theme, mode);
   } catch {}
 }
 
 // Filters accordion open/close
 export function loadFiltersOpen() {
   try {
-    return localStorage.getItem(FILTERS_OPEN_KEY) === "1";
+    return localStorage.getItem(STORAGE_KEYS.filtersOpen) === "1";
   } catch {
     return false;
   }
@@ -64,6 +88,6 @@ export function loadFiltersOpen() {
 
 export function saveFiltersOpen(isOpen) {
   try {
-    localStorage.setItem(FILTERS_OPEN_KEY, isOpen ? "1" : "0");
+    localStorage.setItem(STORAGE_KEYS.filtersOpen, isOpen ? "1" : "0");
   } catch {}
 }

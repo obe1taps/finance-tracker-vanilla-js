@@ -1,4 +1,6 @@
-export function formatMoney(value, currency = "RUB") {
+import { DEFAULT_CURRENCY } from "../config/appConfig.js";
+
+export function formatMoney(value, currency = DEFAULT_CURRENCY) {
   const num = Number(value) || 0;
 
   const locale =

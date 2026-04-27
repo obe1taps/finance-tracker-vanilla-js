@@ -1,3 +1,9 @@
+import {
+  CATEGORY_FALLBACK,
+  DEFAULT_CURRENCY,
+  OTHER_CATEGORY,
+  TRANSACTION_TYPES,
+} from "../config/appConfig.js";
 import { formatMoney as defaultFormatMoney } from "../utils/utils.js";
 import { selectCategoryTotals, selectTopWithOther } from "../domain/selectors.js";
 
@@ -18,7 +24,7 @@ export const PALETTE = [
 
 export function buildColorMap(categories, palette = PALETTE) {
   const keys = Array.from(
-    new Set(categories.map((c) => String(c || "Без категории"))),
+    new Set(categories.map((c) => String(c || CATEGORY_FALLBACK))),
   ).sort((a, b) => a.localeCompare(b, "ru"));
 
   const map = new Map();
@@ -136,7 +142,7 @@ function setFont(ctx, px) {
   ctx.font = `${px}px system-ui, -apple-system, Segoe UI, Roboto, Arial`;
 }
 
-function formatMoneyCompact(value, currency = "RUB") {
+function formatMoneyCompact(value, currency = DEFAULT_CURRENCY) {
   const num = Number(value) || 0;
 
   const locale =
@@ -168,6 +174,61 @@ function fitText(ctx, text, maxWidth, { start = 14, min = 10 } = {}) {
   return null;
 }
 
+function fitMoneyLabel(ctx, total, currency, formatMoney, maxTextWidth) {
+  let label =
+    typeof formatMoney === "function"
+      ? formatMoney(total, currency)
+      : `${Math.round(total)}`;
+
+  let fitted = fitText(ctx, label, maxTextWidth, { start: 14, min: 10 });
+
+  if (!fitted) {
+    label = formatMoneyCompact(total, currency);
+    fitted = fitText(ctx, label, maxTextWidth, { start: 13, min: 10 });
+  }
+
+  if (fitted) return fitted;
+
+  setFont(ctx, 10);
+  const ellipsis = "…";
+  let trimmed = label;
+  while (
+    trimmed.length > 0 &&
+    ctx.measureText(trimmed + ellipsis).width > maxTextWidth
+  ) {
+    trimmed = trimmed.slice(0, -1);
+  }
+
+  return { text: trimmed + ellipsis, size: 10 };
+}
+
+function drawCenterLabel(
+  ctx,
+  { cx, cy, rInner, title, total, currency, formatMoney },
+) {
+  ctx.fillStyle = cssVar("--chart-center", "rgba(226, 232, 240, 0.92)");
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+
+  const maxTextWidth = Math.max(40, Math.floor(rInner * 1.65));
+
+  setFont(ctx, 12);
+  ctx.fillText(title, cx, cy - 12);
+
+  const fitted = fitMoneyLabel(
+    ctx,
+    total,
+    currency,
+    formatMoney,
+    maxTextWidth,
+  );
+
+  setFont(ctx, fitted.size);
+  ctx.fillText(fitted.text, cx, cy + 12);
+
+  ctx.textAlign = "start";
+}
+
 function drawDonut(
   canvas,
   items,
@@ -175,7 +236,7 @@ function drawDonut(
     title,
     colorMap,
     activeIndex = -1,
-    currency = "RUB",
+    currency = DEFAULT_CURRENCY,
     formatMoney = defaultFormatMoney,
   },
 ) {
@@ -281,43 +342,15 @@ function drawDonut(
   ctx.fill();
   ctx.globalCompositeOperation = "source-over";
 
-  // center text
-  // center text (adaptive)
-ctx.fillStyle = cssVar("--chart-center", "rgba(226, 232, 240, 0.92)");
-ctx.textAlign = "center";
-ctx.textBaseline = "middle";
-
-const maxTextWidth = Math.max(40, Math.floor(rInner * 1.65));
-
-setFont(ctx, 12);
-ctx.fillText(title, cx, cy - 12);
-
-let label =
-  typeof formatMoney === "function"
-    ? formatMoney(total, currency)
-    : `${Math.round(total)}`;
-
-let fitted = fitText(ctx, label, maxTextWidth, { start: 14, min: 10 });
-
-if (!fitted) {
-  label = formatMoneyCompact(total, currency);
-  fitted = fitText(ctx, label, maxTextWidth, { start: 13, min: 10 });
-}
-
-if (!fitted) {
-  setFont(ctx, 10);
-  const ell = "…";
-  let t = label;
-  while (t.length > 0 && ctx.measureText(t + ell).width > maxTextWidth) {
-    t = t.slice(0, -1);
-  }
-  fitted = { text: t + ell, size: 10 };
-}
-
-setFont(ctx, fitted.size);
-ctx.fillText(fitted.text, cx, cy + 12);
-
-ctx.textAlign = "start";
+  drawCenterLabel(ctx, {
+    cx,
+    cy,
+    rInner,
+    title,
+    total,
+    currency,
+    formatMoney,
+  });
 
   DONUT_STATE.set(canvas, {
     title,
@@ -337,12 +370,20 @@ ctx.textAlign = "start";
 
 // opts: { currency, formatMoney, colorMaps }
 export function renderCategoryCharts({ chartExpense, chartIncome }, transactions, opts = {}) {
-  const currency = opts.currency || "RUB";
+  const currency = opts.currency || DEFAULT_CURRENCY;
   const formatMoney = opts.formatMoney || defaultFormatMoney;
   const colorMaps = opts.colorMaps || null;
 
-  const expense = selectTopWithOther(selectCategoryTotals(transactions, "expense"), 6, "Другое");
-  const income = selectTopWithOther(selectCategoryTotals(transactions, "income"), 6, "Другое");
+  const expense = selectTopWithOther(
+    selectCategoryTotals(transactions, TRANSACTION_TYPES.EXPENSE),
+    6,
+    OTHER_CATEGORY,
+  );
+  const income = selectTopWithOther(
+    selectCategoryTotals(transactions, TRANSACTION_TYPES.INCOME),
+    6,
+    OTHER_CATEGORY,
+  );
 
   const expenseColorMap =
     colorMaps?.expenseColorMap || buildColorMap(expense.map((x) => x.category));

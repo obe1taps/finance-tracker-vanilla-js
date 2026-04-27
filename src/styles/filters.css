@@ -2,13 +2,14 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: var(--gap-10);
-  align-items: end;
+  align-items: start;
 }
 
 .field {
   display: flex;
   flex-direction: column;
   gap: var(--gap-6);
+  min-width: 0;
 }
 
 .field--full {
@@ -50,6 +51,10 @@
   margin: 8px 0 0;
   color: var(--expense);
   min-height: 18px;
+}
+
+.error:empty {
+  display: none;
 }
 
 .filtersCollapse {

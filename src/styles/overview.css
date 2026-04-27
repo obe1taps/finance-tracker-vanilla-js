@@ -1,0 +1,155 @@
+.monthOverview {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+  align-items: stretch;
+  gap: var(--gap-12);
+  margin: 0 0 14px;
+}
+
+.budgetPanel,
+.insight {
+  border: var(--b-1) solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: var(--shadow-2);
+}
+
+.budgetPanel {
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  align-content: stretch;
+  padding: 16px;
+}
+
+.sectionHeading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(180px, 208px);
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--gap-12);
+  margin-bottom: 14px;
+}
+
+.sectionHeading h2 {
+  margin-bottom: 0;
+  max-width: 280px;
+}
+
+.sectionKicker {
+  margin: 0 0 4px;
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0;
+}
+
+.budgetInput {
+  display: grid;
+  gap: var(--gap-6);
+  min-width: 190px;
+}
+
+.budgetNumbers {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--gap-10);
+}
+
+.budgetNumbers > div {
+  padding: 12px;
+  border-radius: 8px;
+  background: var(--surface-2);
+  border: var(--b-1) solid var(--border);
+}
+
+.budgetNumbers__label,
+.insight__label {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 650;
+  margin-bottom: 6px;
+}
+
+.budgetNumbers strong,
+.insight strong {
+  display: block;
+  font-size: 20px;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.budgetMeter {
+  align-self: end;
+  height: 12px;
+  margin: 14px 0 10px;
+  border-radius: var(--r-pill);
+  overflow: hidden;
+  background: var(--surface-2);
+  border: var(--b-1) solid var(--border);
+}
+
+.budgetMeter span {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  transition: width var(--t-mid), background var(--t-fast);
+}
+
+.budgetMeter span.is-warning {
+  background: linear-gradient(90deg, var(--accent), var(--warning));
+}
+
+.budgetMeter span.is-danger {
+  background: linear-gradient(90deg, var(--warning), var(--danger));
+}
+
+.budgetStatus {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.budgetStatus--good {
+  color: var(--income);
+}
+
+.budgetStatus--warning {
+  color: var(--warning);
+}
+
+.budgetStatus--danger {
+  color: var(--expense);
+}
+
+.insightGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(3, minmax(86px, auto));
+  gap: var(--gap-12);
+}
+
+.insight {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 14px;
+  min-height: 86px;
+  min-width: 0;
+}
+
+.insight--wide {
+  grid-column: 1 / -1;
+  min-height: 98px;
+}
+
+.insight small {
+  display: block;
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}

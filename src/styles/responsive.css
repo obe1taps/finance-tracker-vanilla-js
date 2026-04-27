@@ -3,8 +3,29 @@
     grid-template-columns: 1fr;
   }
 
+  .monthOverview {
+    grid-template-columns: 1fr;
+  }
+
+  .sectionHeading {
+    grid-template-columns: 1fr;
+  }
+
+  .budgetInput {
+    min-width: 0;
+  }
+
+  .budgetNumbers,
+  .insightGrid {
+    grid-template-columns: 1fr;
+  }
+
   .form {
     grid-template-columns: 1fr;
+  }
+
+  .quickAmounts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .filters {

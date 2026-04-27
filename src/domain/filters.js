@@ -1,4 +1,10 @@
+import {
+  DEFAULT_FILTERS,
+  SEARCH_TYPE_LABELS,
+} from "../config/appConfig.js";
 import { todayISO } from "../utils/utils.js";
+
+/** @typedef {import("./types.js").Filters} Filters */
 
 function toISODate(d) {
   const yyyy = d.getFullYear();
@@ -13,18 +19,16 @@ function addDaysISO(iso, days) {
   return toISODate(d);
 }
 
+/**
+ * @returns {Filters}
+ */
 export function getDefaultFilters() {
-  return {
-    type: "all",
-    category: "all",
-    query: "",
-    sort: "desc",
-    period: "all",
-    from: "",
-    to: "",
-  };
+  return { ...DEFAULT_FILTERS };
 }
 
+/**
+ * @param {Filters} filters
+ */
 export function getPeriodRange(filters) {
   const today = todayISO();
   const period = filters.period || "all";
@@ -57,6 +61,10 @@ function inRangeISO(dateISO, from, to) {
   return true;
 }
 
+/**
+ * @param {import("./types.js").Transaction[]} list
+ * @param {Filters} filters
+ */
 export function applyFilters(list, filters) {
   const q = (filters.query || "").trim().toLowerCase();
   const { from, to } = getPeriodRange(filters);
@@ -66,8 +74,17 @@ export function applyFilters(list, filters) {
     const catOk =
       filters.category === "all" ? true : t.category === filters.category;
 
-    const note = (t.note || "").toLowerCase();
-    const queryOk = q === "" ? true : note.includes(q);
+    const searchable = [
+      t.note,
+      t.category,
+      t.date,
+      String(t.amount ?? ""),
+      SEARCH_TYPE_LABELS[t.type] || "",
+    ]
+      .join(" ")
+      .toLowerCase();
+
+    const queryOk = q === "" ? true : searchable.includes(q);
 
     const dateOk = inRangeISO(t.date, from, to);
 

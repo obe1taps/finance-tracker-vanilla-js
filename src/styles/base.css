@@ -13,13 +13,18 @@ body {
 body {
   margin: var(--page-margin);
   font-family: var(--font-sans);
-  background: var(--bg);
+  background:
+    linear-gradient(180deg, rgba(98, 214, 168, 0.08), transparent 220px),
+    linear-gradient(135deg, rgba(110, 168, 255, 0.08), transparent 360px),
+    var(--bg);
+  background-attachment: fixed;
   color: var(--fg);
 }
 
 h1 {
   margin: 0;
-  font-size: 28px;
+  font-size: 32px;
+  line-height: 1.05;
 }
 
 h2 {
@@ -37,4 +42,10 @@ h2 {
 
 .expense {
   color: var(--expense);
+}
+
+button,
+input,
+select {
+  font: inherit;
 }

@@ -23,6 +23,19 @@ export const dom = {
   expenseEl: must(document.querySelector("#expenseTotal"), "#expenseTotal"),
   balanceEl: must(document.querySelector("#balanceTotal"), "#balanceTotal"),
 
+  // month overview
+  monthlyBudgetInputEl: document.querySelector("#monthlyBudgetInput"),
+  monthlySpentEl: document.querySelector("#monthlySpent"),
+  monthlyIncomeEl: document.querySelector("#monthlyIncome"),
+  monthlyBalanceEl: document.querySelector("#monthlyBalance"),
+  dailyAverageEl: document.querySelector("#dailyAverage"),
+  largestExpenseEl: document.querySelector("#largestExpense"),
+  largestExpenseMetaEl: document.querySelector("#largestExpenseMeta"),
+  operationsCountEl: document.querySelector("#operationsCount"),
+  budgetLeftEl: document.querySelector("#budgetLeft"),
+  budgetProgressEl: document.querySelector("#budgetProgress"),
+  budgetStatusEl: document.querySelector("#budgetStatus"),
+
   // buttons
   submitBtn: must(document.querySelector("#submitBtn"), "#submitBtn"),
   cancelEditBtn: document.querySelector("#cancelEditBtn"),

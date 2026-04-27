@@ -8,7 +8,7 @@
 .stats__block {
   position: relative;
   border: var(--b-1) solid var(--border);
-  border-radius: var(--r-lg);
+  border-radius: 8px;
   padding: 12px;
   background: var(--surface-2);
   min-width: 0;
@@ -25,7 +25,7 @@
   height: 180px;
   display: block;
   margin: 6px 0 10px;
-  border-radius: var(--r-md);
+  border-radius: 8px;
   background: var(--surface-2);
   border: var(--b-1) solid var(--border);
 }
@@ -36,7 +36,7 @@
   min-width: 140px;
   max-width: 220px;
   padding: 8px 10px;
-  border-radius: var(--r-md);
+  border-radius: 8px;
   border: var(--b-1) solid var(--border-3);
   background: var(--surface-glass);
   backdrop-filter: blur(6px);
@@ -91,7 +91,7 @@
   gap: var(--gap-10);
   padding: 8px 10px;
   border: var(--b-1) solid var(--border);
-  border-radius: var(--r-md);
+  border-radius: 8px;
   background: var(--surface-3);
 }
 

@@ -1,7 +1,6 @@
+import { UNDO_MS } from "../config/appConfig.js";
 import { saveTransactions } from "../utils/storage.js";
 import { generateId } from "../utils/utils.js";
-
-const UNDO_MS = 5000;
 
 const round2 = (n) => Math.round(n * 100) / 100;
 

@@ -1,20 +1,19 @@
+import {
+  DEFAULT_CURRENCY,
+  DEFAULT_FILTERS,
+  DEFAULT_PAGING,
+} from "../config/appConfig.js";
+
 export const state = {
   transactions: [],
   editingId: null,
 
-  filters: {
-    type: "all",
-    category: "all",
-    query: "",
-    sort: "desc",
-    period: "all",
-    from: "",
-    to: "",
-  },
+  filters: { ...DEFAULT_FILTERS },
 
-  paging: { limit: 10, step: 10 },
+  paging: { ...DEFAULT_PAGING },
 
   lastDeleted: null,
   lastCleared: null,
-  currency: "RUB",
+  currency: DEFAULT_CURRENCY,
+  monthlyBudget: 0,
 };
